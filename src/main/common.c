@@ -133,8 +133,13 @@ int server_sockaddr_init(const char *proto, const char *portstr,
         addr6->sin6_port = port;
 
         return 0;
-        
+
     } else {
         return -1;
     }
+}
+
+void addPokemon(char name) {
+
+    
 }

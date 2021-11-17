@@ -36,6 +36,7 @@ int main(int argc, char **argv) {
     }
 
     struct sockaddr *addr = (struct sockaddr *)(&storage);
+
 	if (0 != connect(sock, addr, sizeof(storage))) {
 		logexit("connect");
 	}
@@ -49,9 +50,7 @@ int main(int argc, char **argv) {
 
 	memset(buf, 0, BUFSZ);
 
-	printf("> ");
-
-	fgets(buf, BUFSZ-1, stdin);
+	
 
 	size_t count = send(sock, buf, strlen(buf)+1, 0);
 
@@ -65,10 +64,17 @@ int main(int argc, char **argv) {
 
 	while (1) {
 		count = recv(sock, buf + total, BUFSZ - total, 0);
-		if (count == 0) {
+		if (count == -1) {
+
 			// Connection terminated.
 			break;
-		}
+            
+		} else {
+
+            printf("> ");
+	        fgets(buf, BUFSZ-1, stdin);
+
+        }
 		total += count;
 	}
 

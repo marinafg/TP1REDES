@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdlib.h>
+#include <stdbool.h>
 
 #include <arpa/inet.h>
 
@@ -13,3 +14,13 @@ void addrtostr(const struct sockaddr *addr, char *str, size_t strsize);
 
 int server_sockaddr_init(const char *proto, const char *portstr,
                          struct sockaddr_storage *storage);
+
+bool addPokemon(char *message);
+
+void listPokemon(char *message);
+
+bool killTerminal(char *message, int socket);
+
+const char* availablePokemon[40];
+
+char* pokedex[39];

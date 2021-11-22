@@ -1,9 +1,14 @@
+#include "common.h"
+
 #include <inttypes.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 #include <arpa/inet.h>
+
+#define BUFSZ 500
 
 void logexit(const char *msg) {
 
@@ -139,7 +144,54 @@ int server_sockaddr_init(const char *proto, const char *portstr,
     }
 }
 
-void addPokemon(char name) {
+const char* availablePokemon[40] = {"bulbasaur", "ivysaur", "venusaur", "charmander", "charmeleon", "charizard", "squirtle",
+                                    "wartortle", "blastoise", "caterpie", "metapod", "butterfree", "weedle", "kakuna",
+                                    "beedrill", "pidgey", "pidgeotto", "pidgeot", "rattata", "raticate", "spearow",
+                                    "fearow", "ekans", "arbok", "pikachu", "raichu", "sandshrew", "sandslash", "nidoran",
+                                    "nidorina", "nidoqueen", "zubat", "nidorino", "nidoking", "clefairy", "clefable",
+                                    "vulpix", "ninetales", "jigglypuff", "wigglytuff"};
 
+bool addPokemon(char *message) {
+
+    for (int i = 0; i < sizeof(pokedex); i++) {
+        if (strstr(message, "add ")) {   
+            char pokemon[100];
+            strcpy(pokemon, &message[4]);
+            
+            for (int j = 0; j <= 40; j++) {
+                if (strstr(pokemon, availablePokemon[j])) {
+                    int last = strlen(pokemon) -1;
+                    pokemon[last] = '\0';
+                    
+                    pokedex[i] = pokemon;
+                    return true;
+                }
+            }
+            
+        } else {
+            return false;
+        }
+    }
+    return 0;
+
+}
+
+void listPokemon(char *message) {
+
+    if (strstr(message, "list")) {
+        for (int i = 0; i < 39; i++) {
+            printf("%s ", pokedex[i]);
+        }
+        printf("\n");
+    }
     
+}
+
+bool killTerminal(char *message, int socket) {
+
+    if (strstr(message, "kill")) {
+        return true;
+    }
+
+    return false;
 }
